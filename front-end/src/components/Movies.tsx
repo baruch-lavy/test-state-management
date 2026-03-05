@@ -1,4 +1,3 @@
-import { Button } from "./ui/button";
 import { useStore } from "@/store/store";
 import { useShallow } from "zustand/react/shallow";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
@@ -16,7 +15,7 @@ export function Movies() {
   );
 
   const setTimeOutId = useRef(0);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     setTimeOutId.current = setTimeout(() => {
@@ -29,8 +28,8 @@ export function Movies() {
     setFilter(e.target.value);
   }
 
-  function navigateToMovie(id :string) {
-    navigate(`/${id}`)
+  function navigateToMovie(id: string) {
+    navigate(`/${id}`);
   }
 
   return (
@@ -50,7 +49,7 @@ export function Movies() {
         {movies.map((movie) => (
           <Card
             key={crypto.randomUUID()}
-            className="flex flex-col h-25 w-25"
+            className="flex flex-col h-25 w-25 cursor-pointer"
             onClick={() => navigateToMovie(movie.imdbID)}
           >
             <CardHeader className="flex flex-row items-center gap-2">
@@ -67,9 +66,6 @@ export function Movies() {
               <div>Genre: {movie.Genre}</div>
               <div>Language: {movie.Language}</div>
             </CardContent>
-            <Button variant="destructive" size="lg">
-              Select Seats
-            </Button>
           </Card>
         ))}
       </div>

@@ -2,7 +2,6 @@ import { useParams } from "react-router";
 import { useStore } from "@/store/store";
 import { useShallow } from "zustand/react/shallow";
 import type { Movie } from "@/types/movies";
-import { useEffect } from "react";
 
 type seat = {
   id: number;
