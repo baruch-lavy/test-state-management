@@ -32,9 +32,9 @@ const initialState: MoviesState = {
     seatSelections: []
 }
 
-export type CartSlice = MoviesState & MoviesAction;
+export type MovieSlice = MoviesState & MoviesAction;
 
-export const createMoviesSlice: StateCreator<Store, StoreMiddlewares, [], CartSlice> = (set, get) => ({
+export const createMoviesSlice: StateCreator<Store, StoreMiddlewares, [], MovieSlice> = (set, get) => ({
     ...initialState,
     setMovies: (movies) => set((state) => {
         state.movies = [...movies];
@@ -74,6 +74,5 @@ export const createMoviesSlice: StateCreator<Store, StoreMiddlewares, [], CartSl
     }, false, 'setSeats'),
     loadSeatSelectionsFromStorage: () => {
         return get().seatSelections
-
     }, 
 });
