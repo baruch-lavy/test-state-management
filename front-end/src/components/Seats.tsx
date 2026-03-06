@@ -13,17 +13,20 @@ type seat = {
 export function Seats() {
   const { id } = useParams();
 
-  const { movies, selectSeat, seatsSelections } = useStore(
+  const { movies, selectSeat, seatsSelections, loadSeats } = useStore(
     useShallow((store) => ({
       movies: store.movies,
       selectSeat: store.selectSeat,
       seatsSelections: store.seatSelections,
       loadSeats: store.loadSeatSelectionsFromStorage,
+
     })),
   );
 
   const movie: Movie | undefined = movies.find((movie) => movie.imdbID == id);
   const seats: seat[] | undefined = movie?.seats;
+
+  const storedSeats = loadSeats();
 
   if (!movie) return <div>not found</div>;
   return (
@@ -49,7 +52,13 @@ export function Seats() {
       </div>
       <div>
         <h3 className="bg-green-500">Your seat is:</h3>
-        <span>{JSON.stringify(seatsSelections)}</span>
+        {storedSeats.map((selection) => (
+          <div key={selection.id} className="bg-green-300 p-2 m-2">
+            {selection.id === movie.imdbID && (
+              <span>{`Your seat for this movie: ${selection.seatNumbers.x}, ${selection.seatNumbers.y}`}</span>
+            )}
+          </div>
+        ))}
       </div>
     </>
   );

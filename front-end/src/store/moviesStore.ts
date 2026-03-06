@@ -2,8 +2,8 @@ import type { Movie } from "@/types/movies";
 import type { StateCreator } from "zustand";
 import type { Store, StoreMiddlewares } from "@/types/store";
 
-type seatSelection =  {id: string; seatNumbers: object}
 type seatNumbers = { x:number,  y:number}
+type seatSelection =  {id: string; seatNumbers: seatNumbers, seatId: number}
 type MoviesState = {
     movies: Movie[];
     moviesCopy: Movie[]
@@ -60,16 +60,21 @@ export const createMoviesSlice: StateCreator<Store, StoreMiddlewares, [], MovieS
         if (error) state.error = error
     }, false, "setError"),
     selectSeat: (movieID, seatNumbers, seatId) => set((state) => {
-        const movieIdx = state.seatSelections.findIndex(movie => movie.id === movieID)
-        if (movieIdx !== -1) {
-            state.seatSelections[movieIdx].seatNumbers = seatNumbers
+        const stateMovieIdx = state.seatSelections.findIndex(movie => movie.id === movieID)
+        if (stateMovieIdx !== -1) {
+            // change the prev seat
+            const prevSeatIdx = get().seatSelections[stateMovieIdx].seatId
+
+            // find the movie index in the movies array and change the seat status
             const movieIndex = state.movies.findIndex(movie => movie.imdbID === movieID)
-            const seatsIdx = state.movies[movieIndex].seats.findIndex(seat => {
-                return seat.id === seatId
-            })
-            state.movies[movieIndex].seats[seatsIdx].isTaken = true
+            state.movies[movieIndex].seats[prevSeatIdx].isTaken = false
+            state.movies[movieIndex].seats[seatId].isTaken = true
+
+            // change the seat selection in the seatSelections array
+            state.seatSelections[stateMovieIdx].seatNumbers = seatNumbers
+            state.seatSelections[stateMovieIdx].seatId = seatId
         } else {
-            state.seatSelections.push({id: movieID, seatNumbers: seatNumbers})
+            state.seatSelections.push({id: movieID, seatNumbers, seatId})
         }
     }, false, 'setSeats'),
     loadSeatSelectionsFromStorage: () => {
