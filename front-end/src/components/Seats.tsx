@@ -53,11 +53,11 @@ export function Seats() {
       <div>
         <h3 className="bg-green-500">Your seat is:</h3>
         {storedSeats.map((selection) => (
-          <div key={selection.id} className="bg-green-300 p-2 m-2">
-            {selection.id === movie.imdbID && (
+            selection.id === movie.imdbID && (
+              <div key={selection.id} className="bg-green-300 p-2 m-2">
               <span>{`Your seat for this movie: ${selection.seatNumbers.x}, ${selection.seatNumbers.y}`}</span>
-            )}
-          </div>
+              </div>
+            )
         ))}
       </div>
     </>
